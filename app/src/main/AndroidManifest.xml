@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:dist="http://schemas.android.com/apk/distribution"
+          package="com.gs.baseupdatelibrary">
+
+    <dist:module dist:instant="true"/>
+
+    <application
+            android:allowBackup="true"
+            android:name=".MyApp"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+        <activity android:name="com.gs.baseupdatelibrary.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!--<receiver android:name="com.gs.baseupdate.receiver.PackageReceiver">-->
+            <!--<intent-filter>-->
+                <!--&lt;!&ndash; 一个新应用包已经安装在设备上，数据包括包名（监听所在的app，新安装时，不能接收到这个广播） &ndash;&gt;-->
+                <!--<action android:name="android.intent.action.PACKAGE_ADDED"/>-->
+                <!--&lt;!&ndash; 一个新版本的应用安装到设备，替换之前已经存在的版本  替换时会先收到卸载的再收到替换的， 替换自身也能收到&ndash;&gt;-->
+                <!--<action android:name="android.intent.action.PACKAGE_REPLACED"/>-->
+                <!--&lt;!&ndash; 一个已存在的应用程序包已经从设备上移除，包括包名（卸载监听所在的app，则无法接收到） &ndash;&gt;-->
+                <!--<action android:name="android.intent.action.PACKAGE_REMOVED"/>-->
+                <!--<data android:scheme="package"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+    </application>
+
+</manifest>

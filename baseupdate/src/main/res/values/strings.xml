@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BaseUpdate</string>
+    <string name="install_permissions_tips">请您开启本应用的安装权限，进行更新</string>
+</resources>
