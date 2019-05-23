@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import com.gs.baseupdate.InstallTool;
 
 /**
@@ -26,8 +27,11 @@ public class DownLoadReceiver extends BroadcastReceiver {
             long downLoadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
             DownloadManager mDownloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
             Uri downloadedFile = mDownloadManager.getUriForDownloadedFile(downLoadId);
+
             if (null != downloadedFile) {
-                InstallTool.installApk(downloadedFile, context);
+                String type = mDownloadManager.getMimeTypeForDownloadedFile(downLoadId);
+                type = TextUtils.isEmpty(type) ? "*/*" : type;
+                InstallTool.openFile(downloadedFile, context, type);
             }
         }
     }

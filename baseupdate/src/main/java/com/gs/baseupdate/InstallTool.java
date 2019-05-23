@@ -85,4 +85,21 @@ public class InstallTool {
         }
 
     }
+
+    public static void openFile(@NonNull Uri uri, @NonNull Context context, String mineType) {
+        if ("application/vnd.android.package-archive".equals(mineType)
+                || "application/octet-stream".equals(mineType)) {
+            //兼容部分手机下载的.apk文件的类型是application/octet-stream
+            installApk(uri, context);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+            intent.setDataAndType(uri, mineType);
+            context.startActivity(intent);
+        }
+
+    }
 }

@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.webkit.URLUtil;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
@@ -103,7 +102,7 @@ public class DownLoadTool {
                 File apkFile;
                 if (null != builder.downLoadFile) {
                     apkFile = builder.downLoadFile;
-                } else if (TextUtils.isEmpty(builder.downLoadFilePath)) {
+                } else if (!TextUtils.isEmpty(builder.downLoadFilePath)) {
                     apkFile = new File(builder.downLoadFilePath);
                 } else {
                     apkFile = new File(
@@ -197,35 +196,11 @@ public class DownLoadTool {
         request.allowScanningByMediaScanner();
         request.setTitle(builder.title);
         request.setDescription(builder.contentMessage);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, builder.downUrl.substring(builder.downUrl.lastIndexOf("/") + 1));
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, builder.newVersion + builder.downUrl.substring(builder.downUrl.lastIndexOf("/") + 1));
         //end 一些非必要的设置
         return mDownloadManager.enqueue(request);
 
 
-    }
-
-    /**
-     * 系统下载  提供给webview拦截的下载事件
-     * 注：需要先申请读写权限  不然会失败
-     *
-     * @param activity           当前的activity
-     * @param url                地址
-     * @param contentDisposition 描述
-     * @param mimeType           类型
-     * @return 下载的任务id
-     */
-    public static long downLoadMangerUrl(Activity activity, String url, String contentDisposition, String mimeType) {
-        DownloadManager mDownloadManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri resource = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(resource);
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setVisibleInDownloadsUi(true);
-        request.allowScanningByMediaScanner();
-        request.setDescription(contentDisposition);
-        String fileName = URLUtil.guessFileName(url, contentDisposition, mimeType);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
-        return mDownloadManager.enqueue(request);
     }
 
     public static class Builder {
@@ -243,11 +218,18 @@ public class DownLoadTool {
         private String title;
         //提示内容
         private String contentMessage;
+        //使用downLoadManager时，增加一个标识
+        private String newVersion = "";
 
 
         public Builder(@NonNull String downUrl, @NonNull Activity activity) {
             this.downUrl = downUrl;
             this.activity = activity;
+        }
+
+        public Builder setNewVersion(String newVersion) {
+            this.newVersion = newVersion;
+            return this;
         }
 
         public Builder setDownLoadListener(@NonNull DownLoadListener downLoadListener) {

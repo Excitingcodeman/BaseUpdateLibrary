@@ -30,6 +30,13 @@ public class PackageReceiver extends BroadcastReceiver {
 
         } else if (Intent.ACTION_PACKAGE_FIRST_LAUNCH.equals(intent.getAction())) {
             //第一次打开
+            Log.d(TAG, "第一次打开---》" + packageName);
+        } else if (Intent.ACTION_PACKAGE_FULLY_REMOVED.equals(intent.getAction())) {
+            // 完全移除
+            Log.d(TAG, "完全移除---》" + packageName);
+        } else if (Intent.ACTION_PACKAGE_CHANGED.equals(intent.getAction())) {
+            // 包修改了
+            Log.d(TAG, "包修改了---》" + packageName);
         }
 
     }
