@@ -30,22 +30,22 @@ public class DownLoadTool {
     /**
      * 下载开始
      */
-    private static final int DOWN_START = 1000;
+    public static final int DOWN_START = 1000;
     /**
      * 下载中
      */
-    private static final int DOWNING = 1001;
+    public static final int DOWNING = 1001;
 
     /**
      * 下载完成
      */
-    private static final int DOWN_COMPLETE = 1002;
+    public static final int DOWN_COMPLETE = 1002;
     /**
      * 下载失败
      */
-    private static final int DOWN_ERROR = 1003;
+    public static final int DOWN_ERROR = 1003;
 
-    private static final BigDecimal hundred = new BigDecimal(100);
+    public static final BigDecimal hundred = new BigDecimal(100);
 
     /**
      * 读写的权限

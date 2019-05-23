@@ -3,6 +3,7 @@ package com.gs.baseupdatelibrary;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -10,9 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import com.gs.baseupdate.DownLoadListener;
-import com.gs.baseupdate.DownLoadTool;
-import com.gs.baseupdate.InstallTool;
+import com.gs.baseupdate.*;
 
 import java.io.File;
 
@@ -23,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     Button button;
 
     String downLoadPath = "http://test-download.antrice.cn/000/file/yld/yld.apk";
+
+    DownLoadManagerProgress downLoadManagerProgress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progress_horizontal);
         downLoadTool = new DownLoadTool.Builder(downLoadPath, this)
-                .setNewVersion("V1.0.2")
                 .setDownLoadListener(new DownLoadListener() {
                     @Override
                     public void downStart() {
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
+
     }
 
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                         && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 
         ) {
-            downLoadTool.downLoadManager();
+            listener(downLoadTool.downLoadManager());
         } else {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -94,8 +95,36 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             if (!refresh) {
-                downLoadTool.downLoadManager();
+//                listener(downLoadTool.downLoadManager());
             }
         }
+    }
+
+
+    private void listener(long id) {
+        downLoadManagerProgress = new DownLoadManagerProgress(this, id);
+        downLoadManagerProgress.setDownLoadListener(new BaseDownLoadListener() {
+            @Override
+            public void downStart() {
+
+            }
+
+            @Override
+            public void downError() {
+
+            }
+
+            @Override
+            public void downComplete() {
+
+            }
+
+            @Override
+            public void onDown(int progress) {
+                Log.d("TAG", "当前进度" + progress);
+                progressBar.setProgress(progress);
+            }
+        });
+        downLoadManagerProgress.start();
     }
 }
